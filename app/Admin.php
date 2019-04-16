@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Admin extends Authenticatable
 {
     use Notifiable, SoftDeletes;
 
@@ -15,12 +15,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'cash',
     ];
 
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
     protected $casts = [
@@ -31,28 +29,8 @@ class User extends Authenticatable
     | Relations
     |***************
     */
-    public function recipients ()
-    {
-        return $this->hasMany('App\Recipient');
-    }
-
-    public function transactions ()
-    {
-        return $this->hasMany('App\Transaction');
-    }
-
-    public function carts ()
-    {
-        return $this->hasMany('App\Cart');
-    }
-
-    public function logs ()
+    public function logs()
     {
         return $this->morphMany('App\Log', 'logable');
-    }
-
-    public function cashflows ()
-    {
-        return $this->hasMany('App\Cashflow');
     }
 }
