@@ -18,6 +18,15 @@ class Item extends Model
     ];
 
     /***************
+    | Accessors
+    |***************
+    */
+    public function getFullIdAttribute()
+    {
+        return 'IT' . str_pad($this->id, 4, '0', STR_PAD_LEFT);;
+    }
+
+    /***************
     | Relations
     |***************
     */
@@ -33,7 +42,7 @@ class Item extends Model
 
     public function images ()
     {
-        return $this->hasMany('App\Item');
+        return $this->hasMany('App\Image');
     }
 
     public function tags ()
