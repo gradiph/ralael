@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -9,11 +10,10 @@ class Recipient extends Model
 {
     use SoftDeletes;
 
-    public $timestamps = FALSE;
-
     protected $fillable = [
         'user_id',
         'name',
+        'phone',
         'address',
         'urban',
         'subdistrict',
@@ -21,6 +21,15 @@ class Recipient extends Model
         'province',
         'post_code',
     ];
+
+    /***************
+    | Scopes
+    |***************
+    */
+    public function scopeCurrentUser($query)
+    {
+        return $query->where('user_id', Auth::id());
+    }
 
     /***************
     | Relations

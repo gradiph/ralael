@@ -17,6 +17,7 @@ class CreateRecipientsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('name');
+            $table->string('phone');
             $table->string('address')->comment('address consist of street name, number, rt, and rw');
             $table->string('urban');
             $table->string('subdistrict');

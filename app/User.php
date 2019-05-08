@@ -31,6 +31,15 @@ class User extends Authenticatable
     ];
 
     /***************
+    | Accessors
+    |***************
+    */
+    public function getFullIdAttribute()
+    {
+        return 'US' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+    }
+
+    /***************
     | Relations
     |***************
     */

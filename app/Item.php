@@ -23,7 +23,7 @@ class Item extends Model
     */
     public function getFullIdAttribute()
     {
-        return 'IT' . str_pad($this->id, 4, '0', STR_PAD_LEFT);;
+        return 'IT' . str_pad($this->id, 3, '0', STR_PAD_LEFT);
     }
 
     /***************

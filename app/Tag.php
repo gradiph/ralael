@@ -13,6 +13,15 @@ class Tag extends Model
     ];
 
     /***************
+    | Accessors
+    |***************
+    */
+    public function getFullIdAttribute()
+    {
+        return 'TA' . str_pad($this->id, 3, '0', STR_PAD_LEFT);
+    }
+
+    /***************
     | Relations
     |***************
     */

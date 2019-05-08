@@ -16,6 +16,20 @@ class Payment extends Model
         'verified_at',
     ];
 
+    protected $dates = [
+        'created_at',
+        'verified_at',
+    ];
+
+    /***************
+    | Accessors
+    |***************
+    */
+    public function getFullIdAttribute()
+    {
+        return 'PA' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+    }
+
     /***************
     | Relations
     |***************

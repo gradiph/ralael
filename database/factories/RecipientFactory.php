@@ -6,6 +6,7 @@ $factory->define(App\Recipient::class, function (Faker $faker) {
     return [
         'user_id' => App\User::inRandomOrder()->first()->id,
         'name' => $faker->name,
+        'phone' => $faker->phone,
         'address' => $faker->address,
         'urban' => $faker->word,
         'subdistrict' => $faker->word,

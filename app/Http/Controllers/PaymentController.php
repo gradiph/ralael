@@ -2,84 +2,77 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use DB;
+use App\Log;
 use App\Payment;
+use App\Transaction;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $transactions = Transaction::currentUser()->get();
+
+        return view('payment.create')->with([
+            'transactions' => $transactions,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
-    }
+        DB::beginTransaction();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Payment $payment)
-    {
-        //
-    }
+        //simpan file bukti pembayaran
+        if (! $request->hasFile('file'))
+        {
+            $error = 'E231';
+            goto error;
+        }
+        if (! $request->file('file')->isValid())
+        {
+            $error = 'E232';
+            goto error;
+        }
+        $path = $request->file->store('payment', 'uploads');
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Payment $payment)
-    {
-        //
-    }
+        //buat data payment
+        $payment = Payment::create([
+            'transaction_id' => $request->transaction_id,
+            'value' => $request->value,
+            'address' => $path,
+            'created_at' => now(),
+            'verified_at' => NULL,
+        ]);
+        if (empty($payment))
+        {
+            $error = 'E233';
+            goto error;
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Payment $payment)
-    {
-        //
-    }
+        //buat data log
+        $log = Log::create([
+            'logable_id' => Auth::id(),
+            'logable_type' => 'users',
+            'description' => 'membuat pembayaran ID #' . $payment->full_id,
+            'created_at' => now(),
+        ]);
+        if (empty($log))
+        {
+            $error = 'E234';
+            goto error;
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Payment $payment)
-    {
-        //
+        DB::commit();
+        return redirect()->route('transactions.show', ['transaction' => $request->transaction_id]);
+
+        error:
+        DB::rollBack();
+        return back()->withInput->with([
+            'alert_type' => 'alert-danger',
+            'alert_title' => 'Gagal!',
+            'alert_message' => 'Pembayaran gagal dibuat. &mdash; ' . $error,
+        ]);
     }
 }

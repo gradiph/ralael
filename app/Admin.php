@@ -26,6 +26,15 @@ class Admin extends Authenticatable
     ];
 
     /***************
+    | Accessors
+    |***************
+    */
+    public function getFullIdAttribute()
+    {
+        return 'AD' . str_pad($this->id, 2, '0', STR_PAD_LEFT);
+    }
+
+    /***************
     | Relations
     |***************
     */

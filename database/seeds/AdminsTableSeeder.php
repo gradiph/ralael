@@ -15,13 +15,13 @@ class AdminsTableSeeder extends Seeder
         Admin::create([
             'name' => 'Admin',
             'email' => 'admin@ralael.id',
-            'password' => 'admin',
+            'password' => bcrypt('admin'),
         ]);
 
         Admin::create([
             'name' => 'Admin 2',
             'email' => 'admin2@ralael.id',
-            'password' => 'admin',
+            'password' => bcrypt('admin'),
         ]);
     }
 }
