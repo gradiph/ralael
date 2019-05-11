@@ -23,6 +23,8 @@ Route::post('cart', 'HomeController@cartPost');
 Route::middleware('auth')->group(function () {
     Route::get('checkout', 'HomeController@checkout')->name('checkout');
     Route::post('checkout', 'HomeController@checkoutPost');
+    Route::get('password/change', 'HomeController@passwordChange')->name('password.change');
+    Route::post('password/change', 'HomeController@passwordChangePost');
 });
 
 /*------------
@@ -53,16 +55,18 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
      * Auth
      *------------
      */
-    Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-    Route::post('login', 'Auth\LoginController@login');
-    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-    Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
-    Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-    Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
-    Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
-    Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+    Route::namespace('Auth')->group(function () {
+        Route::get('login', 'LoginController@showLoginForm')->name('login');
+        Route::post('login', 'LoginController@login');
+        Route::post('logout', 'LoginController@logout')->name('logout');
+        Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+        Route::post('password/reset', 'ResetPasswordController@reset')->name('password.update');
+        Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+        Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+        Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
+        Route::get('email/verify', 'VerificationController@show')->name('verification.notice');
+        Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
+    });
 
     Route::middleware('auth:admin')->group(function () {
         /*------------
@@ -70,6 +74,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
          *------------
          */
         Route::get('', 'HomeController@index')->name('home');
+        Route::get('password/change', 'HomeController@passwordChange')->name('password.change');
+        Route::post('password/change', 'HomeController@passwordChangePost');
 
         /*------------
          * Transactions

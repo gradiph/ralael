@@ -18,7 +18,10 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->updated_at->format('Y-m-d H:i') }}</td>
                     <td>{{ $user->trashed() ? 'non aktif' : 'aktif' }}</td>
-                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-warning btn-edit">Ubah</button>
+                        <button type="button" class="btn btn-sm btn-danger btn-delete">Hapus</button>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

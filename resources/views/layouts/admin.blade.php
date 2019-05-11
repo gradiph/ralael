@@ -94,6 +94,8 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('admin.password.change') }}">{{ __('Ubah Password') }}</a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -114,6 +116,15 @@
         <main class="py-4">
             @yield('content')
         </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+            </div>
+        </div>
     </div>
 
     <!-- Javascript -->

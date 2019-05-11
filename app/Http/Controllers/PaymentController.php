@@ -35,13 +35,14 @@ class PaymentController extends Controller
             $error = 'E232';
             goto error;
         }
-        $path = $request->file->store('payment', 'uploads');
+        $request->file->storePublicly('payment', 'uploads');
+        $filename = $request->file->hashName();
 
         //buat data payment
         $payment = Payment::create([
             'transaction_id' => $request->transaction_id,
             'value' => $request->value,
-            'address' => $path,
+            'address' => $filename,
             'created_at' => now(),
             'verified_at' => NULL,
         ]);

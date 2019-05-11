@@ -10,7 +10,7 @@
                 <div class="card-body">
                     @if (session('alert_type'))
                         <div class="alert {{ session('alert_type') }}" role="alert">
-                            {{ session('alert_title') }} <br>
+                            <strong>{{ session('alert_title') }}</strong> <br>
                             {!! session('alert_message') !!}
                         </div>
                     @endif

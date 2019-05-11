@@ -8,11 +8,10 @@
                 <div class="card-header">Kelola User</div>
 
                 <div class="card-body">
-                    @if (session('alert_type'))
-                        <div class="alert {{ session('alert_type') }}" role="alert">
-                            {{ session('alert_title') }} <br>
-                            {!! session('alert_message') !!}
-                        </div>
+                    @if (session('alert'))
+                        @alert($alert_config)
+                            {{ $alert }}
+                        @endcomponent
                     @endif
 
                     <div id="data"></div>
